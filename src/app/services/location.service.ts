@@ -158,14 +158,17 @@ export class LocationService {
       this.gpsEnabled$.next(true);
       this.startTracking();
     } catch (error) {
+      const errorMessage = this.getLocationErrorMessage(error);
+      console.warn('GPS check failed:', errorMessage);
       this.gpsEnabled$.next(false);
-      this.showGpsPrompt();
+      this.showGpsPrompt(errorMessage);
     }
   }
 
-  private showGpsPrompt() {
-    // In a real app, this would show a system dialog
-    console.log('GPS is disabled. Please enable GPS to continue location tracking.');
+  private showGpsPrompt(errorMessage?: string) {
+    const message = errorMessage || 'GPS is disabled. Please enable GPS to continue location tracking.';
+    console.log('GPS Prompt:', message);
+    // In a real app, this would show a system dialog or notification
   }
 
   private startTracking() {
