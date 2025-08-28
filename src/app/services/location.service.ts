@@ -138,6 +138,13 @@ export class LocationService {
       // Update permission status
       await this.checkPermissionStatus();
 
+      // Show success notification
+      this.notificationService.success(
+        'Location Permission Granted',
+        'Location tracking is now enabled. Your location will be tracked during working hours.',
+        true
+      );
+
       this.checkGpsAndStartTracking();
       return true;
     } catch (error) {
