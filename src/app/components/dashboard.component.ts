@@ -382,11 +382,28 @@ export class DashboardComponent implements OnInit {
 
   // Location methods
   async requestLocationConsent() {
-    await this.locationService.requestLocationConsent();
+    console.log('User requested location consent');
+    const granted = await this.locationService.requestLocationConsent();
+
+    if (granted) {
+      console.log('Location consent granted successfully');
+      // Could show a success toast here
+    } else {
+      console.log('Location consent was denied or failed');
+      // Error message is already handled by the service
+    }
   }
 
   async captureLocation() {
-    await this.locationService.manualLocationCapture();
+    console.log('User requested manual location capture');
+    const location = await this.locationService.manualLocationCapture();
+
+    if (location) {
+      console.log('Location captured successfully:', location.location);
+      // Could show a success message here
+      // For now, just log success - the UI will update automatically via signals
+    }
+    // Error handling is done in the service
   }
 
   // Branch activity methods
