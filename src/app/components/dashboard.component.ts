@@ -554,4 +554,61 @@ export class DashboardComponent implements OnInit {
   trackByMeeting(index: number, meeting: any): string {
     return meeting.meetingId;
   }
+
+  // Location consent UI helpers
+  getLocationConsentCardClass(): string {
+    const permissionStatus = this.locationService.permissionStatus();
+    if (permissionStatus?.state === 'denied') {
+      return 'bg-red-50 border-red-200';
+    }
+    return 'bg-warning-50 border-warning-200';
+  }
+
+  getLocationConsentIconClass(): string {
+    const permissionStatus = this.locationService.permissionStatus();
+    if (permissionStatus?.state === 'denied') {
+      return 'text-red-600';
+    }
+    return 'text-warning-600';
+  }
+
+  getLocationConsentTextClass(): string {
+    const permissionStatus = this.locationService.permissionStatus();
+    if (permissionStatus?.state === 'denied') {
+      return 'text-red-800';
+    }
+    return 'text-warning-800';
+  }
+
+  getLocationConsentButtonClass(): string {
+    const permissionStatus = this.locationService.permissionStatus();
+    if (permissionStatus?.state === 'denied') {
+      return 'btn-secondary'; // Use secondary for blocked state
+    }
+    return 'btn-warning';
+  }
+
+  getLocationConsentTitle(): string {
+    const permissionStatus = this.locationService.permissionStatus();
+    if (permissionStatus?.state === 'denied') {
+      return 'Location Permission Blocked';
+    }
+    return 'Location Permission Required';
+  }
+
+  getLocationConsentMessage(): string {
+    const permissionStatus = this.locationService.permissionStatus();
+    if (permissionStatus?.state === 'denied') {
+      return 'Location access has been blocked. Click below for instructions on how to unblock location permissions in your browser.';
+    }
+    return 'To enable location tracking and branch activities, please grant location permission. This allows the app to track your location for geo-validation and compliance.';
+  }
+
+  getLocationConsentButtonText(): string {
+    const permissionStatus = this.locationService.permissionStatus();
+    if (permissionStatus?.state === 'denied') {
+      return 'Show Unblock Instructions';
+    }
+    return 'Grant Location Permission';
+  }
 }
