@@ -299,7 +299,12 @@ export class NavigationComponent {
   }
 
   locationStatusText(): string {
+    const permissionStatus = this.locationService.permissionStatus();
+
     if (!this.locationService.hasConsent()) {
+      if (permissionStatus?.state === 'denied') {
+        return "Blocked";
+      }
       return "No Consent";
     }
 
@@ -311,7 +316,7 @@ export class NavigationComponent {
       return "Tracking";
     }
 
-    return "Offline";
+    return "Ready";
   }
 
   toggleMobileMenu(): void {
