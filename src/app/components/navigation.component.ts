@@ -295,7 +295,7 @@ export class NavigationComponent {
       return `${baseClass} bg-success-500 animate-pulse`;
     }
 
-    return `${baseClass} bg-error-500`;
+    return `${baseClass} bg-red-500`;
   }
 
   locationStatusText(): string {
