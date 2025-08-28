@@ -111,13 +111,13 @@ import { ModalService } from '../../services/modal.service';
                   <div>
                     <p class="text-sm font-medium text-secondary-600 mb-1">Coordinates</p>
                     <p class="text-lg text-secondary-900">
-                      {{ locationService.currentLocation()?.latitude.toFixed(6) }}, 
-                      {{ locationService.currentLocation()?.longitude.toFixed(6) }}
+                      {{ locationService.currentLocation()?.latitude?.toFixed(6) }},
+                      {{ locationService.currentLocation()?.longitude?.toFixed(6) }}
                     </p>
                   </div>
                   <div>
                     <p class="text-sm font-medium text-secondary-600 mb-1">Accuracy</p>
-                    <p class="text-lg text-secondary-900">{{ locationService.currentLocation()?.accuracy.toFixed(1) }}m</p>
+                    <p class="text-lg text-secondary-900">{{ locationService.currentLocation()?.accuracy?.toFixed(1) }}m</p>
                   </div>
                 </div>
               </div>
