@@ -134,12 +134,18 @@ export class LocationService {
       }
 
       navigator.geolocation.getCurrentPosition(
-        position => resolve(position),
-        error => reject(error),
+        position => {
+          console.log('Location acquired successfully:', position);
+          resolve(position);
+        },
+        error => {
+          console.error('Geolocation error:', error);
+          reject(error);
+        },
         {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 300000 // 5 minutes
+          enableHighAccuracy: false, // Changed to false for better compatibility
+          timeout: 15000, // Increased timeout
+          maximumAge: 600000 // 10 minutes
         }
       );
     });
