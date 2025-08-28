@@ -691,7 +691,7 @@ export class PartnerMeetComponent implements OnInit {
   // Meeting management
   loadMeetings() {
     this.allMeetings.set(this.partnerService.meetings());
-    this.filterMeetings(this.meetingFilter());
+    this.filterMeetings(this.meetingFilterValue);
   }
 
   loadActiveMeeting() {
@@ -733,8 +733,9 @@ export class PartnerMeetComponent implements OnInit {
       let code: string | undefined;
 
       if (meetingCode) {
-        code = prompt('Enter the meeting verification code:');
-        if (!code) return;
+        const enteredCode = prompt('Enter the meeting verification code:');
+        if (!enteredCode) return;
+        code = enteredCode;
       }
 
       const result = await this.partnerService.startMeeting(meeting.meetingId, code);
