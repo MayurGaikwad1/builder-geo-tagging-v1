@@ -630,7 +630,7 @@ export class AnalyticsModalComponent implements OnInit, OnDestroy {
       case 'B': return 'text-primary-600';
       case 'C': return 'text-warning-600';
       case 'D': return 'text-warning-700';
-      case 'F': return 'text-error-600';
+      case 'F': return 'text-red-600';
       default: return 'text-secondary-600';
     }
   }
@@ -640,14 +640,14 @@ export class AnalyticsModalComponent implements OnInit, OnDestroy {
     if (score >= 80) return 'text-primary-600';
     if (score >= 70) return 'text-warning-600';
     if (score >= 60) return 'text-warning-700';
-    return 'text-error-600';
+    return 'text-red-600';
   }
 
   getRiskColor(risk: string): string {
     switch (risk) {
       case 'low': return 'text-success-600';
       case 'medium': return 'text-warning-600';
-      case 'high': return 'text-error-600';
+      case 'high': return 'text-red-600';
       default: return 'text-secondary-600';
     }
   }
