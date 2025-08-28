@@ -4,6 +4,7 @@ import { LocationService } from '../services/location.service';
 import { BranchService } from '../services/branch.service';
 import { PartnerService } from '../services/partner.service';
 import { ModalService } from '../services/modal.service';
+import { NotificationService } from '../services/notification.service';
 import { LocationModalComponent } from './modals/location-modal.component';
 import { PartnerMeetModalComponent } from './modals/partner-meet-modal.component';
 import { AnalyticsModalComponent } from './modals/analytics-modal.component';
