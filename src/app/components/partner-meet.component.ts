@@ -569,16 +569,16 @@ export class PartnerMeetComponent implements OnInit {
 
   // Computed properties
   filteredPartners() {
-    const category = this.newMeeting().category;
-    const subCategory = this.newMeeting().subCategory;
-    
+    const category = this.newMeetingData.category;
+    const subCategory = this.newMeetingData.subCategory;
+
     if (category !== 'existing') return [];
-    
+
     let partners = this.partnerService.getPartnersByCategory('existing');
     if (subCategory) {
       partners = partners.filter(p => p.subCategory === subCategory);
     }
-    
+
     return partners;
   }
 
@@ -612,13 +612,11 @@ export class PartnerMeetComponent implements OnInit {
 
   // Form handlers
   onCategoryChange() {
-    const meeting = this.newMeeting();
-    meeting.subCategory = '';
-    meeting.partnerAgentCode = '';
-    meeting.partnerName = '';
-    meeting.address = '';
-    meeting.contactNo = '';
-    this.newMeeting.set({ ...meeting });
+    this.newMeetingData.subCategory = '';
+    this.newMeetingData.partnerAgentCode = '';
+    this.newMeetingData.partnerName = '';
+    this.newMeetingData.address = '';
+    this.newMeetingData.contactNo = '';
     this.selectedPartner.set(null);
   }
 
