@@ -672,7 +672,7 @@ export class PartnerMeetComponent implements OnInit {
   }
 
   resetForm() {
-    this.newMeeting.set({
+    this.newMeetingData = {
       category: '',
       subCategory: '',
       partnerAgentCode: '',
@@ -684,7 +684,7 @@ export class PartnerMeetComponent implements OnInit {
       contactNo: '',
       remark: '',
       useStoredAddress: true
-    });
+    };
     this.selectedPartner.set(null);
   }
 
@@ -699,9 +699,9 @@ export class PartnerMeetComponent implements OnInit {
   }
 
   filterMeetings(filter: string) {
-    this.meetingFilter.set(filter);
+    this.meetingFilterValue = filter;
     let meetings = this.allMeetings();
-    
+
     switch (filter) {
       case 'scheduled':
         meetings = meetings.filter(m => m.status === 'scheduled');
@@ -714,7 +714,7 @@ export class PartnerMeetComponent implements OnInit {
         meetings = meetings.filter(m => new Date(m.meetingDateTime).toDateString() === today);
         break;
     }
-    
+
     this.filteredMeetings.set(meetings);
   }
 
