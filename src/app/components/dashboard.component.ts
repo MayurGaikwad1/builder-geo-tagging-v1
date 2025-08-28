@@ -345,7 +345,7 @@ import { AnalyticsModalComponent } from './modals/analytics-modal.component';
       @apply bg-primary-100 text-primary-800;
     }
     .status-incomplete {
-      @apply bg-error-100 text-error-800;
+      @apply bg-red-100 text-red-800;
     }
     .quick-action-btn {
       @apply flex flex-col items-center justify-center p-6 bg-white rounded-lg shadow-sm border border-secondary-200 hover:bg-secondary-50 hover:shadow-md transition-all duration-200 text-secondary-700 hover:text-primary-600;
