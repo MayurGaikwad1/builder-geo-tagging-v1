@@ -248,7 +248,26 @@ export class LocationComponent implements OnInit {
   }
 
   showPrivacyInfo() {
-    alert('Privacy Information:\n\n• Location data is stored locally on your device\n• Data is encrypted and secure\n• Used only for business purposes\n• Retained for 3 years as per policy\n• You can revoke consent at any time');
+    const privacyInfo = `Privacy Information:
+
+• Location data is stored locally on your device
+• Data is encrypted and secure
+• Used only for business purposes
+• Retained for 3 years as per policy
+• You can revoke consent at any time
+
+How to enable location access:
+1. Look for the location icon (🌍) in your browser's address bar
+2. Click it and select "Allow" for location permissions
+3. If blocked, click the lock icon next to the URL
+4. Set Location to "Allow" and refresh the page
+
+Note: Location access is required for:
+• Branch check-in verification
+• Partner meeting location validation
+• Automated activity tracking`;
+
+    alert(privacyInfo);
   }
 
   // Status indicator classes and text
