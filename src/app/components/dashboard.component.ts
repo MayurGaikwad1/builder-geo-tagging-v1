@@ -33,15 +33,15 @@ import { AnalyticsModalComponent } from './modals/analytics-modal.component';
           <div class="card p-6 cursor-pointer hover:shadow-md transition-shadow" (click)="openLocationModal()">
             <div class="flex items-center">
               <div class="flex-shrink-0">
-                <div class="p-3 rounded-full" [class]="locationService.hasConsent() ? 'bg-success-100' : 'bg-error-100'">
-                  <svg class="w-6 h-6" [class]="locationService.hasConsent() ? 'text-success-600' : 'text-error-600'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="p-3 rounded-full" [class]="locationService.hasConsent() ? 'bg-success-100' : 'bg-red-100'">
+                  <svg class="w-6 h-6" [class]="locationService.hasConsent() ? 'text-success-600' : 'text-red-600'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                   </svg>
                 </div>
               </div>
               <div class="ml-4">
                 <p class="text-sm font-medium text-secondary-600">Location Tracking</p>
-                <p class="text-2xl font-bold" [class]="locationService.hasConsent() ? 'text-success-600' : 'text-error-600'">
+                <p class="text-2xl font-bold" [class]="locationService.hasConsent() ? 'text-success-600' : 'text-red-600'">
                   {{ locationService.hasConsent() ? 'Active' : 'Inactive' }}
                 </p>
                 <p class="text-xs text-secondary-500 mt-1">Click to manage</p>
