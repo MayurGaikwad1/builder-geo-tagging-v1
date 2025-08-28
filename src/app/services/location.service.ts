@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
-import { BehaviorSubject, Observable, interval } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
+import { Injectable, signal } from "@angular/core";
+import { BehaviorSubject, Observable, interval } from "rxjs";
+import { map, filter } from "rxjs/operators";
 
 export interface LocationData {
   empId: string;
@@ -25,7 +25,7 @@ export interface LocationConsent {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class LocationService {
   private currentLocation$ = new BehaviorSubject<LocationData | null>(null);
@@ -46,10 +46,14 @@ export class LocationService {
 
   constructor() {
     // Subscribe to observables and update signals
-    this.currentLocation$.subscribe(location => this.currentLocation.set(location));
-    this.trackingActive$.subscribe(active => this.isTracking.set(active));
-    this.consent$.subscribe(consent => this.hasConsent.set(consent?.granted ?? false));
-    this.gpsEnabled$.subscribe(enabled => this.isGpsEnabled.set(enabled));
+    this.currentLocation$.subscribe((location) =>
+      this.currentLocation.set(location),
+    );
+    this.trackingActive$.subscribe((active) => this.isTracking.set(active));
+    this.consent$.subscribe((consent) =>
+      this.hasConsent.set(consent?.granted ?? false),
+    );
+    this.gpsEnabled$.subscribe((enabled) => this.isGpsEnabled.set(enabled));
 
     // Initialize with mock employee data
     this.initializeMockEmployee();
@@ -61,20 +65,20 @@ export class LocationService {
   private initializeMockEmployee() {
     // Mock employee data for demo
     const mockEmployee = {
-      empId: 'EMP001',
-      empAgentCode: 'AG001',
-      empName: 'John Doe',
-      reportingManagerId: 'MGR001',
-      reportingManagerName: 'Jane Smith',
-      department: 'Sales',
-      channel: 'Branch'
+      empId: "EMP001",
+      empAgentCode: "AG001",
+      empName: "John Doe",
+      reportingManagerId: "MGR001",
+      reportingManagerName: "Jane Smith",
+      department: "Sales",
+      channel: "Branch",
     };
-    
-    localStorage.setItem('employeeData', JSON.stringify(mockEmployee));
+
+    localStorage.setItem("employeeData", JSON.stringify(mockEmployee));
   }
 
   private checkExistingConsent() {
-    const storedConsent = localStorage.getItem('locationConsent');
+    const storedConsent = localStorage.getItem("locationConsent");
     if (storedConsent) {
       const consent: LocationConsent = JSON.parse(storedConsent);
       this.consent$.next(consent);
@@ -88,7 +92,7 @@ export class LocationService {
     try {
       // Check if geolocation is supported
       if (!navigator.geolocation) {
-        this.showLocationError('Geolocation is not supported by this browser');
+        this.showLocationError("Geolocation is not supported by this browser");
         return false;
       }
 
@@ -98,17 +102,17 @@ export class LocationService {
       const consent: LocationConsent = {
         granted: true,
         timestamp: new Date(),
-        canRevoke: true
+        canRevoke: true,
       };
 
-      localStorage.setItem('locationConsent', JSON.stringify(consent));
+      localStorage.setItem("locationConsent", JSON.stringify(consent));
       this.consent$.next(consent);
 
       this.checkGpsAndStartTracking();
       return true;
     } catch (error) {
       const errorMessage = this.getLocationErrorMessage(error);
-      console.error('Location consent denied:', errorMessage);
+      console.error("Location consent denied:", errorMessage);
       this.showLocationError(errorMessage);
       return false;
     }
@@ -118,10 +122,10 @@ export class LocationService {
     const consent: LocationConsent = {
       granted: false,
       timestamp: new Date(),
-      canRevoke: true
+      canRevoke: true,
     };
-    
-    localStorage.setItem('locationConsent', JSON.stringify(consent));
+
+    localStorage.setItem("locationConsent", JSON.stringify(consent));
     this.consent$.next(consent);
     this.stopTracking();
   }
@@ -129,24 +133,24 @@ export class LocationService {
   private async getCurrentPosition(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject(new Error('Geolocation is not supported by this browser.'));
+        reject(new Error("Geolocation is not supported by this browser."));
         return;
       }
 
       navigator.geolocation.getCurrentPosition(
-        position => {
-          console.log('Location acquired successfully:', position);
+        (position) => {
+          console.log("Location acquired successfully:", position);
           resolve(position);
         },
-        error => {
-          console.error('Geolocation error:', error);
+        (error) => {
+          console.error("Geolocation error:", error);
           reject(error);
         },
         {
           enableHighAccuracy: false, // Changed to false for better compatibility
           timeout: 15000, // Increased timeout
-          maximumAge: 600000 // 10 minutes
-        }
+          maximumAge: 600000, // 10 minutes
+        },
       );
     });
   }
@@ -159,15 +163,17 @@ export class LocationService {
       this.startTracking();
     } catch (error) {
       const errorMessage = this.getLocationErrorMessage(error);
-      console.warn('GPS check failed:', errorMessage);
+      console.warn("GPS check failed:", errorMessage);
       this.gpsEnabled$.next(false);
       this.showGpsPrompt(errorMessage);
     }
   }
 
   private showGpsPrompt(errorMessage?: string) {
-    const message = errorMessage || 'GPS is disabled. Please enable GPS to continue location tracking.';
-    console.log('GPS Prompt:', message);
+    const message =
+      errorMessage ||
+      "GPS is disabled. Please enable GPS to continue location tracking.";
+    console.log("GPS Prompt:", message);
     // In a real app, this would show a system dialog or notification
   }
 
@@ -177,7 +183,7 @@ export class LocationService {
     }
 
     this.trackingActive$.next(true);
-    
+
     // Capture initial location
     this.captureLocation(true);
 
@@ -185,9 +191,12 @@ export class LocationService {
     this.trackingInterval = setInterval(() => {
       const now = new Date();
       const currentHour = now.getHours();
-      
+
       // Only track during working hours
-      if (currentHour >= this.trackingStartTime && currentHour <= this.trackingEndTime) {
+      if (
+        currentHour >= this.trackingStartTime &&
+        currentHour <= this.trackingEndTime
+      ) {
         this.captureLocation(false);
       }
     }, this.trackingCadence);
@@ -204,24 +213,28 @@ export class LocationService {
   private async captureLocation(userInitiated: boolean = false) {
     try {
       const position = await this.getCurrentPosition();
-      const employeeData = JSON.parse(localStorage.getItem('employeeData') || '{}');
+      const employeeData = JSON.parse(
+        localStorage.getItem("employeeData") || "{}",
+      );
 
       const locationData: LocationData = {
         ...employeeData,
         dateTime: new Date(),
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
-        location: await this.reverseGeocode(position.coords.latitude, position.coords.longitude),
+        location: await this.reverseGeocode(
+          position.coords.latitude,
+          position.coords.longitude,
+        ),
         accuracy: position.coords.accuracy,
-        userInitiated
+        userInitiated,
       };
 
       this.currentLocation$.next(locationData);
       this.storeLocationData(locationData);
-
     } catch (error) {
       const errorMessage = this.getLocationErrorMessage(error);
-      console.error('Failed to capture location:', errorMessage);
+      console.error("Failed to capture location:", errorMessage);
       if (userInitiated) {
         this.showLocationError(errorMessage);
       }
@@ -230,77 +243,85 @@ export class LocationService {
   }
 
   private getLocationErrorMessage(error: any): string {
-    if (error instanceof GeolocationPositionError || (error && error.code !== undefined)) {
+    if (
+      error instanceof GeolocationPositionError ||
+      (error && error.code !== undefined)
+    ) {
       switch (error.code) {
         case 1: // PERMISSION_DENIED
-          return 'Location access denied. Please enable location permissions in your browser settings.';
+          return "Location access denied. Please enable location permissions in your browser settings.";
         case 2: // POSITION_UNAVAILABLE
-          return 'Location information is unavailable. Please check your GPS/network connection.';
+          return "Location information is unavailable. Please check your GPS/network connection.";
         case 3: // TIMEOUT
-          return 'Location request timed out. Please try again.';
+          return "Location request timed out. Please try again.";
         default:
-          return `Location error: ${error.message || 'Unknown error occurred'}`;
+          return `Location error: ${error.message || "Unknown error occurred"}`;
       }
     } else if (error instanceof Error) {
       return error.message;
     }
-    return 'An unknown location error occurred. Please try again.';
+    return "An unknown location error occurred. Please try again.";
   }
 
   private showLocationError(message: string) {
     // For now, use alert - in a real app, use a toast/notification service
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       const fullMessage = `${message}\n\nTo enable location access:\n• Click the location icon in your browser's address bar\n• Select "Allow" for location permissions\n• Refresh the page and try again`;
       alert(`Location Error: ${fullMessage}`);
     }
-    console.error('Location Error:', message);
+    console.error("Location Error:", message);
   }
 
   // Public method to check location permission status
-  async checkLocationPermission(): Promise<{supported: boolean, permission: string}> {
+  async checkLocationPermission(): Promise<{
+    supported: boolean;
+    permission: string;
+  }> {
     if (!navigator.geolocation) {
-      return { supported: false, permission: 'not-supported' };
+      return { supported: false, permission: "not-supported" };
     }
 
-    if ('permissions' in navigator) {
+    if ("permissions" in navigator) {
       try {
-        const permission = await navigator.permissions.query({ name: 'geolocation' });
+        const permission = await navigator.permissions.query({
+          name: "geolocation",
+        });
         return { supported: true, permission: permission.state };
       } catch (error) {
-        console.warn('Could not query geolocation permission:', error);
+        console.warn("Could not query geolocation permission:", error);
       }
     }
 
-    return { supported: true, permission: 'unknown' };
+    return { supported: true, permission: "unknown" };
   }
 
   private async reverseGeocode(lat: number, lng: number): Promise<string> {
     // Mock reverse geocoding - in real app, use Google Maps API
     const mockLocations = [
-      'Main Branch Office, Downtown',
-      'Regional Office, Business District',
-      'Customer Office, Tech Park',
-      'Home Office Area'
+      "Main Branch Office, Downtown",
+      "Regional Office, Business District",
+      "Customer Office, Tech Park",
+      "Home Office Area",
     ];
     return mockLocations[Math.floor(Math.random() * mockLocations.length)];
   }
 
   private storeLocationData(locationData: LocationData) {
-    const stored = JSON.parse(localStorage.getItem('locationHistory') || '[]');
+    const stored = JSON.parse(localStorage.getItem("locationHistory") || "[]");
     stored.push(locationData);
-    
+
     // Keep only last 100 entries for demo
     if (stored.length > 100) {
       stored.splice(0, stored.length - 100);
     }
-    
-    localStorage.setItem('locationHistory', JSON.stringify(stored));
+
+    localStorage.setItem("locationHistory", JSON.stringify(stored));
   }
 
   async manualLocationCapture(): Promise<LocationData | null> {
     try {
       if (!navigator.geolocation) {
-        this.showLocationError('Geolocation is not supported by this browser');
+        this.showLocationError("Geolocation is not supported by this browser");
         return null;
       }
 
@@ -308,14 +329,14 @@ export class LocationService {
       return this.currentLocation();
     } catch (error) {
       const errorMessage = this.getLocationErrorMessage(error);
-      console.error('Manual location capture failed:', errorMessage);
+      console.error("Manual location capture failed:", errorMessage);
       this.showLocationError(`Failed to capture location: ${errorMessage}`);
       return null;
     }
   }
 
   getLocationHistory(): LocationData[] {
-    return JSON.parse(localStorage.getItem('locationHistory') || '[]');
+    return JSON.parse(localStorage.getItem("locationHistory") || "[]");
   }
 
   getCurrentLocationObservable(): Observable<LocationData | null> {
@@ -326,7 +347,11 @@ export class LocationService {
     return this.trackingActive$.asObservable();
   }
 
-  isWithinGeofence(targetLat: number, targetLng: number, radiusMeters: number = 100): boolean {
+  isWithinGeofence(
+    targetLat: number,
+    targetLng: number,
+    radiusMeters: number = 100,
+  ): boolean {
     const current = this.currentLocation();
     if (!current) return false;
 
@@ -334,23 +359,28 @@ export class LocationService {
       current.latitude,
       current.longitude,
       targetLat,
-      targetLng
+      targetLng,
     );
 
     return distance <= radiusMeters;
   }
 
-  private calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  private calculateDistance(
+    lat1: number,
+    lng1: number,
+    lat2: number,
+    lng2: number,
+  ): number {
     const R = 6371e3; // Earth's radius in meters
-    const φ1 = lat1 * Math.PI/180;
-    const φ2 = lat2 * Math.PI/180;
-    const Δφ = (lat2-lat1) * Math.PI/180;
-    const Δλ = (lng2-lng1) * Math.PI/180;
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lng2 - lng1) * Math.PI) / 180;
 
-    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ/2) * Math.sin(Δλ/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c;
   }
