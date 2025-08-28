@@ -40,15 +40,15 @@ import { ModalService } from '../../services/modal.service';
                 <div class="card p-4">
                   <div class="flex items-center">
                     <div class="flex-shrink-0">
-                      <div class="p-2 rounded-full" [class]="locationService.hasConsent() ? 'bg-success-100' : 'bg-error-100'">
-                        <svg class="w-5 h-5" [class]="locationService.hasConsent() ? 'text-success-600' : 'text-error-600'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div class="p-2 rounded-full" [class]="locationService.hasConsent() ? 'bg-success-100' : 'bg-red-100'">
+                        <svg class="w-5 h-5" [class]="locationService.hasConsent() ? 'text-success-600' : 'text-red-600'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         </svg>
                       </div>
                     </div>
                     <div class="ml-4">
                       <p class="text-sm font-medium text-secondary-600">Location Consent</p>
-                      <p class="text-lg font-semibold" [class]="locationService.hasConsent() ? 'text-success-600' : 'text-error-600'">
+                      <p class="text-lg font-semibold" [class]="locationService.hasConsent() ? 'text-success-600' : 'text-red-600'">
                         {{ locationService.hasConsent() ? 'Granted' : 'Required' }}
                       </p>
                     </div>
@@ -224,7 +224,7 @@ import { ModalService } from '../../services/modal.service';
       @apply text-secondary-700 bg-white border-secondary-300 hover:bg-secondary-50 focus:ring-primary-500;
     }
     .btn-outline {
-      @apply text-error-700 bg-white border-error-300 hover:bg-error-50 focus:ring-error-500;
+      @apply text-red-700 bg-white border-red-300 hover:bg-red-50 focus:ring-red-500;
     }
   `]
 })
