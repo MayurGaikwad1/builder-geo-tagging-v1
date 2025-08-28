@@ -508,7 +508,7 @@ export class PartnerMeetComponent implements OnInit {
   activeTab = signal<'new-meeting' | 'meetings' | 'active' | 'analytics'>('new-meeting');
   
   // Meeting form data
-  newMeeting = signal({
+  newMeetingData = {
     category: '',
     subCategory: '',
     partnerAgentCode: '',
@@ -520,7 +520,7 @@ export class PartnerMeetComponent implements OnInit {
     contactNo: '',
     remark: '',
     useStoredAddress: true
-  });
+  };
 
   // UI state
   isCreating = signal(false);
