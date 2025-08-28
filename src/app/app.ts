@@ -9,5 +9,5 @@ import { NavigationComponent } from './components/navigation.component';
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('1App - Field Location System');
+  protected readonly title = signal('Geo-Tagging Module - Location & Partner Management');
 }
