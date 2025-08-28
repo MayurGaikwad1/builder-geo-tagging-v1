@@ -1,0 +1,12 @@
+/* Main app component styles */
+
+/* Smooth transitions for all elements */
+* {
+  transition: color 150ms ease-in-out, background-color 150ms ease-in-out, border-color 150ms ease-in-out;
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 2px solid theme('colors.primary.500');
+  outline-offset: 2px;
+}
