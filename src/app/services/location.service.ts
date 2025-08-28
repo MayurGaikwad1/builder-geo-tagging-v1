@@ -321,18 +321,25 @@ export class LocationService {
     // Log detailed error for debugging
     console.error('Location Error Details:', errorDetails);
 
-    // Show user-friendly message
-    if (typeof window !== 'undefined') {
-      // Use a more polite and helpful message
-      const userMessage = this.formatUserErrorMessage(message, browserInstructions);
-      
-      // For now, still use alert but with better formatting
-      // In a real app, this would be replaced with a toast/modal service
+    // Show user-friendly notification
+    const userMessage = this.formatUserErrorMessage(message, browserInstructions);
+
+    // Show error notification with instructions
+    this.notificationService.error(
+      'Location Access Required',
+      `${message}\n\nThis app needs location access for tracking and geo-validation features.\n\nClick here for browser-specific instructions.`,
+      false // Don't auto-close
+    );
+
+    // For detailed instructions, could show a separate info notification
+    if (browserInstructions) {
       setTimeout(() => {
-        if (confirm(`${userMessage}\n\nWould you like to see detailed instructions for your browser?`)) {
-          alert(browserInstructions);
-        }
-      }, 100);
+        this.notificationService.info(
+          'Browser Instructions',
+          browserInstructions,
+          false // Don't auto-close so user can read it
+        );
+      }, 1000);
     }
   }
 
