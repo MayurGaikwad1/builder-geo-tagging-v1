@@ -296,7 +296,7 @@ export class LocationComponent implements OnInit {
   async requestConsent() {
     // Check if location is supported
     const permissionStatus =
-      await this.locationService.checkLocationPermission();
+      await this.locationService.getDetailedPermissionStatus();
 
     if (!permissionStatus.supported) {
       alert(
