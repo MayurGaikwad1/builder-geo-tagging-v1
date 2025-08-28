@@ -511,11 +511,12 @@ Or check your browser's privacy/security settings:
       
       if (location) {
         console.log('Manual location capture successful');
-        // Show success message instead of error
-        if (typeof window !== 'undefined') {
-          // Could replace with a toast notification
-          console.log('Location captured successfully:', location.location);
-        }
+        // Show success notification
+        this.notificationService.success(
+          'Location Captured',
+          `Successfully captured location: ${location.location}`,
+          true // Auto-close after 3 seconds
+        );
       }
       
       return location;
