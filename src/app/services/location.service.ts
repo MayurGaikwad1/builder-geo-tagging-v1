@@ -54,6 +54,8 @@ export class LocationService {
   private trackingStartTime = 9; // 09:00
   private trackingEndTime = 21; // 21:00
 
+  private notificationService = inject(NotificationService);
+
   constructor() {
     // Subscribe to observables and update signals
     this.currentLocation$.subscribe(location => this.currentLocation.set(location));
