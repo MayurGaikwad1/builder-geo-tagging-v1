@@ -230,10 +230,16 @@ export class LocationComponent implements OnInit {
   }
 
   async captureLocation() {
-    const location = await this.locationService.manualLocationCapture();
-    if (location) {
-      this.currentLocation.set(location);
-      this.refreshHistory();
+    try {
+      const location = await this.locationService.manualLocationCapture();
+      if (location) {
+        this.currentLocation.set(location);
+        this.refreshHistory();
+        console.log('Location captured successfully:', location);
+      }
+    } catch (error) {
+      console.error('Failed to capture location:', error);
+      // The location service will handle showing the error message
     }
   }
 
