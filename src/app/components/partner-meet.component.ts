@@ -168,11 +168,11 @@ import { LocationService } from '../services/location.service';
               <div>
                 <label class="block text-sm font-medium text-secondary-700 mb-2">Meeting Address *</label>
                 <div class="space-y-3">
-                  <div *ngIf="newMeeting.category === 'existing'" class="flex items-center space-x-3">
-                    <input 
-                      type="radio" 
-                      id="useStoredAddress" 
-                      [(ngModel)]="newMeeting.useStoredAddress" 
+                  <div *ngIf="newMeetingData.category === 'existing'" class="flex items-center space-x-3">
+                    <input
+                      type="radio"
+                      id="useStoredAddress"
+                      [(ngModel)]="newMeetingData.useStoredAddress"
                       [value]="true"
                       name="addressType"
                       class="text-primary-600 focus:ring-primary-500"
@@ -180,10 +180,10 @@ import { LocationService } from '../services/location.service';
                     <label for="useStoredAddress" class="text-sm text-secondary-700">Use stored partner address</label>
                   </div>
                   <div class="flex items-center space-x-3">
-                    <input 
-                      type="radio" 
-                      id="useNewAddress" 
-                      [(ngModel)]="newMeeting.useStoredAddress" 
+                    <input
+                      type="radio"
+                      id="useNewAddress"
+                      [(ngModel)]="newMeetingData.useStoredAddress"
                       [value]="false"
                       name="addressType"
                       class="text-primary-600 focus:ring-primary-500"
