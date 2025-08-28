@@ -145,7 +145,7 @@ import { AnalyticsModalComponent } from './modals/analytics-modal.component';
               </div>
               <div>
                 <p class="text-sm font-medium text-secondary-600 mb-1">Accuracy</p>
-                <p class="text-lg text-secondary-900">{{ locationService.currentLocation()?.accuracy.toFixed(1) }}m</p>
+                <p class="text-lg text-secondary-900">{{ locationService.currentLocation()?.accuracy?.toFixed(1) }}m</p>
               </div>
             </div>
             <div class="mt-4 flex gap-3">
