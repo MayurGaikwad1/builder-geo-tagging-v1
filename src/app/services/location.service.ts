@@ -202,7 +202,7 @@ export class LocationService {
     try {
       const position = await this.getCurrentPosition();
       const employeeData = JSON.parse(localStorage.getItem('employeeData') || '{}');
-      
+
       const locationData: LocationData = {
         ...employeeData,
         dateTime: new Date(),
@@ -215,11 +215,41 @@ export class LocationService {
 
       this.currentLocation$.next(locationData);
       this.storeLocationData(locationData);
-      
+
     } catch (error) {
-      console.error('Failed to capture location:', error);
+      const errorMessage = this.getLocationErrorMessage(error);
+      console.error('Failed to capture location:', errorMessage);
+      if (userInitiated) {
+        this.showLocationError(errorMessage);
+      }
       this.gpsEnabled$.next(false);
     }
+  }
+
+  private getLocationErrorMessage(error: any): string {
+    if (error instanceof GeolocationPositionError || (error && error.code !== undefined)) {
+      switch (error.code) {
+        case 1: // PERMISSION_DENIED
+          return 'Location access denied. Please enable location permissions in your browser settings.';
+        case 2: // POSITION_UNAVAILABLE
+          return 'Location information is unavailable. Please check your GPS/network connection.';
+        case 3: // TIMEOUT
+          return 'Location request timed out. Please try again.';
+        default:
+          return `Location error: ${error.message || 'Unknown error occurred'}`;
+      }
+    } else if (error instanceof Error) {
+      return error.message;
+    }
+    return 'An unknown location error occurred. Please try again.';
+  }
+
+  private showLocationError(message: string) {
+    // For now, use alert - in a real app, use a toast/notification service
+    if (typeof window !== 'undefined') {
+      alert(`Location Error: ${message}`);
+    }
+    console.error('Location Error:', message);
   }
 
   private async reverseGeocode(lat: number, lng: number): Promise<string> {
