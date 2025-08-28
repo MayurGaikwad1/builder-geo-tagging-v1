@@ -250,9 +250,28 @@ export class LocationService {
   private showLocationError(message: string) {
     // For now, use alert - in a real app, use a toast/notification service
     if (typeof window !== 'undefined') {
-      alert(`Location Error: ${message}`);
+      const fullMessage = `${message}\n\nTo enable location access:\n• Click the location icon in your browser's address bar\n• Select "Allow" for location permissions\n• Refresh the page and try again`;
+      alert(`Location Error: ${fullMessage}`);
     }
     console.error('Location Error:', message);
+  }
+
+  // Public method to check location permission status
+  async checkLocationPermission(): Promise<{supported: boolean, permission: string}> {
+    if (!navigator.geolocation) {
+      return { supported: false, permission: 'not-supported' };
+    }
+
+    if ('permissions' in navigator) {
+      try {
+        const permission = await navigator.permissions.query({ name: 'geolocation' });
+        return { supported: true, permission: permission.state };
+      } catch (error) {
+        console.warn('Could not query geolocation permission:', error);
+      }
+    }
+
+    return { supported: true, permission: 'unknown' };
   }
 
   private async reverseGeocode(lat: number, lng: number): Promise<string> {
