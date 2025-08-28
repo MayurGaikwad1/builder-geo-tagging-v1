@@ -255,8 +255,8 @@ import { LocationService } from '../services/location.service';
             <div class="flex items-center justify-between mb-6">
               <h2 class="text-xl font-semibold text-secondary-900">My Meetings</h2>
               <div class="flex items-center space-x-4">
-                <select 
-                  [(ngModel)]="meetingFilter()"
+                <select
+                  [(ngModel)]="meetingFilterValue"
                   (ngModelChange)="filterMeetings($event)"
                   class="rounded-lg border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                 >
@@ -524,7 +524,7 @@ export class PartnerMeetComponent implements OnInit {
 
   // UI state
   isCreating = signal(false);
-  meetingFilter = signal('all');
+  meetingFilterValue = 'all';
   meetingTimer = signal('00:00:00');
 
   // Data
