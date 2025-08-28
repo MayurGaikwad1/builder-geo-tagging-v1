@@ -162,21 +162,24 @@ import { AnalyticsModalComponent } from './modals/analytics-modal.component';
 
         <!-- Request Location Consent -->
         <div class="mb-8" *ngIf="!locationService.hasConsent()">
-          <div class="card p-6 bg-warning-50 border-warning-200">
+          <div class="card p-6" [class]="getLocationConsentCardClass()">
             <div class="flex items-start">
               <div class="flex-shrink-0">
-                <svg class="h-6 w-6 text-warning-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="h-6 w-6" [class]="getLocationConsentIconClass()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"/>
                 </svg>
               </div>
               <div class="ml-3 flex-1">
-                <h3 class="text-lg font-medium text-warning-800">Location Permission Required</h3>
-                <p class="text-warning-700 mt-1">
-                  To enable location tracking and branch activities, please grant location permission.
+                <h3 class="text-lg font-medium" [class]="getLocationConsentTextClass()">{{ getLocationConsentTitle() }}</h3>
+                <p class="mt-1" [class]="getLocationConsentTextClass()">
+                  {{ getLocationConsentMessage() }}
                 </p>
-                <div class="mt-4">
-                  <button (click)="requestLocationConsent()" class="btn btn-warning">
-                    Grant Location Permission
+                <div class="mt-4 flex flex-wrap gap-3">
+                  <button (click)="requestLocationConsent()" class="btn" [class]="getLocationConsentButtonClass()">
+                    {{ getLocationConsentButtonText() }}
+                  </button>
+                  <button (click)="openLocationModal()" class="btn btn-secondary">
+                    Learn More
                   </button>
                 </div>
               </div>
