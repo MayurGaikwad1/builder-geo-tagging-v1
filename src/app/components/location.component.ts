@@ -207,6 +207,14 @@ export class LocationComponent implements OnInit {
   }
 
   async requestConsent() {
+    // Check if location is supported
+    const permissionStatus = await this.locationService.checkLocationPermission();
+
+    if (!permissionStatus.supported) {
+      alert('Location services are not supported by your browser. Please use a modern browser with location support.');
+      return;
+    }
+
     const granted = await this.locationService.requestLocationConsent();
     this.loadLocationData();
     if (granted) {
