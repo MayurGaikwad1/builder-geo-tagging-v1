@@ -130,7 +130,7 @@ import { LocationService } from '../services/location.service';
                   <label class="block text-sm font-medium text-secondary-700 mb-2">Meeting Date *</label>
                   <input 
                     type="date"
-                    [(ngModel)]="newMeeting.date"
+                    [(ngModel)]="newMeetingData.date"
                     name="date"
                     required
                     [min]="today()"
@@ -142,7 +142,7 @@ import { LocationService } from '../services/location.service';
                   <label class="block text-sm font-medium text-secondary-700 mb-2">Meeting Time *</label>
                   <input 
                     type="time"
-                    [(ngModel)]="newMeeting.time"
+                    [(ngModel)]="newMeetingData.time"
                     name="time"
                     required
                     class="w-full rounded-lg border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
@@ -154,7 +154,7 @@ import { LocationService } from '../services/location.service';
               <div>
                 <label class="block text-sm font-medium text-secondary-700 mb-2">Purpose *</label>
                 <select 
-                  [(ngModel)]="newMeeting.purpose" 
+                  [(ngModel)]="newMeetingData.purpose" 
                   name="purpose"
                   required
                   class="w-full rounded-lg border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
