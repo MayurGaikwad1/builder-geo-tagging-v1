@@ -302,4 +302,38 @@ export class LocationModalComponent {
   trackByLocation(index: number, location: LocationData): string {
     return `${location.dateTime.toString()}_${location.latitude}_${location.longitude}`;
   }
+
+  getPermissionStatusColor(): string {
+    const status = this.locationService.permissionStatus();
+    if (!status) return 'text-secondary-500';
+
+    switch (status.state) {
+      case 'granted':
+        return 'text-success-600';
+      case 'denied':
+        return 'text-red-600';
+      case 'prompt':
+        return 'text-warning-600';
+      default:
+        return 'text-secondary-500';
+    }
+  }
+
+  getPermissionStatusText(): string {
+    const status = this.locationService.permissionStatus();
+    if (!status) return 'Unknown';
+
+    switch (status.state) {
+      case 'granted':
+        return 'Granted';
+      case 'denied':
+        return 'Blocked';
+      case 'prompt':
+        return 'Not requested';
+      case 'not-supported':
+        return 'Not supported';
+      default:
+        return 'Unknown';
+    }
+  }
 }
