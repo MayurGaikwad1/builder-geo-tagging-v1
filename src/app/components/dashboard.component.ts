@@ -361,6 +361,7 @@ export class DashboardComponent implements OnInit {
   branchService = inject(BranchService);
   partnerService = inject(PartnerService);
   modalService = inject(ModalService);
+  notificationService = inject(NotificationService);
 
   ngOnInit() {
     // Check permission status on startup but don't auto-request
