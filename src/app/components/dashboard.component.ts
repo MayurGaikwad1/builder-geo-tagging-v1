@@ -307,10 +307,26 @@ export class DashboardComponent implements OnInit {
   }
 
   async requestLocationConsent() {
+    // Check permission status first
+    const permissionStatus = await this.locationService.checkLocationPermission();
+
+    if (!permissionStatus.supported) {
+      alert('Location services are not supported by your browser. Please use a modern browser with location support.');
+      return;
+    }
+
+    if (permissionStatus.permission === 'denied') {
+      alert('Location access has been denied. Please:\n1. Click the location icon in your browser address bar\n2. Select "Allow" for location permissions\n3. Refresh the page and try again');
+      return;
+    }
+
     const granted = await this.locationService.requestLocationConsent();
     this.hasLocationConsent.set(granted);
     if (granted) {
       this.loadLocationData();
+    } else {
+      // Permission was not granted, show helpful message
+      console.log('Location permission not granted');
     }
   }
 
