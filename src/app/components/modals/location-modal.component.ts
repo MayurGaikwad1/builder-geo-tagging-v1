@@ -243,16 +243,27 @@ export class LocationModalComponent {
   }
 
   async requestConsent() {
+    console.log('Location consent requested from modal');
     const granted = await this.locationService.requestLocationConsent();
     if (granted) {
+      console.log('Location consent granted, reloading recent locations');
       this.loadRecentLocations();
+    } else {
+      console.log('Location consent denied');
+      // Service handles error display, just refresh permission status
+      await this.locationService.refreshPermissionStatus();
     }
   }
 
   async captureLocation() {
+    console.log('Manual location capture requested from modal');
     const location = await this.locationService.manualLocationCapture();
     if (location) {
+      console.log('Location captured successfully, reloading recent locations');
       this.loadRecentLocations();
+    } else {
+      console.log('Location capture failed');
+      // Service handles error display
     }
   }
 
