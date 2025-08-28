@@ -362,12 +362,9 @@ export class DashboardComponent implements OnInit {
   modalService = inject(ModalService);
 
   ngOnInit() {
-    // Auto-request location consent if not already granted
-    if (!this.locationService.hasConsent()) {
-      setTimeout(() => {
-        this.requestLocationConsent();
-      }, 1000);
-    }
+    // Check permission status on startup but don't auto-request
+    // Let user explicitly request location access
+    this.locationService.refreshPermissionStatus();
   }
 
   // Modal opening methods
