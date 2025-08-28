@@ -213,7 +213,7 @@ import { ModalService } from "../services/modal.service";
 })
 export class NavigationComponent {
   private isMobileMenuOpen = signal(false);
-  private activePage = signal('dashboard');
+  public activePage = signal('dashboard');
 
   locationService = inject(LocationService);
   modalService = inject(ModalService);
