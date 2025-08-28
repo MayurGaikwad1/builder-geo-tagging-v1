@@ -86,8 +86,13 @@ export class AnalyticsService {
   constructor(
     private locationService: LocationService,
     private branchService: BranchService,
-    private partnerService: PartnerService
+    private partnerService: PartnerService,
+    private mockDataService: MockDataService
   ) {
+    // Initialize mock data first
+    this.mockDataService.regenerateAllMockData();
+
+    // Then initialize analytics
     this.initializeAnalytics();
   }
 
