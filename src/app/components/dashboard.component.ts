@@ -500,7 +500,7 @@ export class DashboardComponent implements OnInit {
     const meetingCode = meeting.meetingCode ? 
       prompt('Enter meeting code:') : undefined;
     
-    const result = await this.partnerService.startMeeting(meeting.meetingId, meetingCode);
+    const result = await this.partnerService.startMeeting(meeting.meetingId, meetingCode || undefined);
     
     if (result.success) {
       alert('Meeting started successfully!');
