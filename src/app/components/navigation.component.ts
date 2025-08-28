@@ -114,13 +114,13 @@ import { LocationService } from '../services/location.service';
           >
             Location Tracking
           </a>
-          <a 
-            routerLink="/partner-meet" 
+          <a
+            routerLink="/partner-meet"
             routerLinkActive="bg-primary-50 text-primary-600"
             class="block px-3 py-2 rounded-md text-base font-medium text-secondary-700 hover:text-primary-600 hover:bg-primary-50"
             (click)="closeMobileMenu()"
           >
-            Partner Meet
+            Partner Meet (Customer 360)
           </a>
           <a 
             routerLink="/reports" 
