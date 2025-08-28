@@ -94,10 +94,10 @@ import { LocationService } from '../services/location.service';
 
               <!-- Partner Selection/Name -->
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div *ngIf="newMeeting.category === 'existing'">
+                <div *ngIf="newMeetingData.category === 'existing'">
                   <label class="block text-sm font-medium text-secondary-700 mb-2">Partner Agent Code *</label>
-                  <select 
-                    [(ngModel)]="newMeeting.partnerAgentCode" 
+                  <select
+                    [(ngModel)]="newMeetingData.partnerAgentCode"
                     name="partnerAgentCode"
                     required
                     (change)="onPartnerSelect()"
@@ -112,12 +112,12 @@ import { LocationService } from '../services/location.service';
 
                 <div>
                   <label class="block text-sm font-medium text-secondary-700 mb-2">Partner Name *</label>
-                  <input 
+                  <input
                     type="text"
-                    [(ngModel)]="newMeeting.partnerName"
+                    [(ngModel)]="newMeetingData.partnerName"
                     name="partnerName"
                     required
-                    [readonly]="newMeeting.category === 'existing' && newMeeting.partnerAgentCode"
+                    [readonly]="newMeetingData.category === 'existing' && newMeetingData.partnerAgentCode"
                     placeholder="Enter partner name"
                     class="w-full rounded-lg border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                   >
