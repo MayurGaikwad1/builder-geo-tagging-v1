@@ -59,8 +59,8 @@ import { LocationService } from '../services/location.service';
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label class="block text-sm font-medium text-secondary-700 mb-2">Partner Category *</label>
-                  <select 
-                    [(ngModel)]="newMeeting.category" 
+                  <select
+                    [(ngModel)]="newMeetingData.category"
                     name="category"
                     required
                     (change)="onCategoryChange()"
@@ -73,10 +73,10 @@ import { LocationService } from '../services/location.service';
                 </div>
 
                 <!-- Sub-Category (for existing partners) -->
-                <div *ngIf="newMeeting.category === 'existing'">
+                <div *ngIf="newMeetingData.category === 'existing'">
                   <label class="block text-sm font-medium text-secondary-700 mb-2">Sub-Category *</label>
-                  <select 
-                    [(ngModel)]="newMeeting.subCategory" 
+                  <select
+                    [(ngModel)]="newMeetingData.subCategory"
                     name="subCategory"
                     required
                     class="w-full rounded-lg border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
