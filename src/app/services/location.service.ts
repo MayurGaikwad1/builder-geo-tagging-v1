@@ -86,22 +86,30 @@ export class LocationService {
 
   async requestLocationConsent(): Promise<boolean> {
     try {
+      // Check if geolocation is supported
+      if (!navigator.geolocation) {
+        this.showLocationError('Geolocation is not supported by this browser');
+        return false;
+      }
+
       // Request geolocation permission
       const position = await this.getCurrentPosition();
-      
+
       const consent: LocationConsent = {
         granted: true,
         timestamp: new Date(),
         canRevoke: true
       };
-      
+
       localStorage.setItem('locationConsent', JSON.stringify(consent));
       this.consent$.next(consent);
-      
+
       this.checkGpsAndStartTracking();
       return true;
     } catch (error) {
-      console.error('Location consent denied:', error);
+      const errorMessage = this.getLocationErrorMessage(error);
+      console.error('Location consent denied:', errorMessage);
+      this.showLocationError(errorMessage);
       return false;
     }
   }
