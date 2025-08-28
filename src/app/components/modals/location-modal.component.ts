@@ -35,6 +35,24 @@ import { ModalService } from '../../services/modal.service';
             <!-- Location Status -->
             <div class="mb-8">
               <h4 class="text-lg font-semibold text-secondary-900 mb-4">Current Status</h4>
+
+              <!-- Permission Status Info -->
+              <div class="mb-6 p-4 bg-secondary-50 rounded-lg" *ngIf="locationService.permissionStatus()">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                    <svg class="w-5 h-5" [class]="getPermissionStatusColor()" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                  </div>
+                  <div class="ml-3">
+                    <p class="text-sm font-medium text-secondary-800">Permission Status: {{ getPermissionStatusText() }}</p>
+                    <p class="text-xs text-secondary-600" *ngIf="!locationService.permissionStatus()?.canRequest">
+                      Permission has been blocked. Click "Grant Location Permission" for instructions.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <!-- Location Consent -->
                 <div class="card p-4">
