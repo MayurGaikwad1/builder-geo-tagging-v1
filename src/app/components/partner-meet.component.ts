@@ -193,24 +193,24 @@ import { LocationService } from '../services/location.service';
                 </div>
 
                 <textarea 
-                  [(ngModel)]="newMeeting.address"
+                  [(ngModel)]="newMeetingData.address"
                   name="address"
                   required
                   rows="3"
                   placeholder="Enter meeting address..."
-                  [readonly]="newMeeting.useStoredAddress && selectedPartner()"
+                  [readonly]="newMeetingData.useStoredAddress && selectedPartner()"
                   class="mt-3 w-full rounded-lg border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                 ></textarea>
               </div>
 
               <!-- Contact Number -->
-              <div *ngIf="newMeeting.category === 'existing'">
+              <div *ngIf="newMeetingData.category === 'existing'">
                 <label class="block text-sm font-medium text-secondary-700 mb-2">Contact Number</label>
                 <input 
                   type="tel"
-                  [(ngModel)]="newMeeting.contactNo"
+                  [(ngModel)]="newMeetingData.contactNo"
                   name="contactNo"
-                  [readonly]="newMeeting.partnerAgentCode"
+                  [readonly]="newMeetingData.partnerAgentCode"
                   placeholder="Contact number"
                   class="w-full rounded-lg border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500"
                 >
@@ -220,7 +220,7 @@ import { LocationService } from '../services/location.service';
               <div>
                 <label class="block text-sm font-medium text-secondary-700 mb-2">Remarks</label>
                 <textarea 
-                  [(ngModel)]="newMeeting.remark"
+                  [(ngModel)]="newMeetingData.remark"
                   name="remark"
                   rows="3"
                   placeholder="Optional remarks..."
