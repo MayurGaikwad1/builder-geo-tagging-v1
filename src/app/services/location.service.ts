@@ -1,7 +1,7 @@
-import { Injectable, signal, inject } from '@angular/core';
-import { BehaviorSubject, Observable, interval } from 'rxjs';
-import { map, filter } from 'rxjs/operators';
-import { NotificationService } from './notification.service';
+import { Injectable, signal, inject } from "@angular/core";
+import { BehaviorSubject, Observable, interval } from "rxjs";
+import { map, filter } from "rxjs/operators";
+import { NotificationService } from "./notification.service";
 
 export interface LocationData {
   empId: string;
@@ -27,27 +27,30 @@ export interface LocationConsent {
 
 export interface LocationPermissionStatus {
   supported: boolean;
-  state: 'granted' | 'denied' | 'prompt' | 'not-supported' | 'unknown';
+  state: "granted" | "denied" | "prompt" | "not-supported" | "unknown";
   canRequest: boolean;
   browserInstructions: string;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class LocationService {
   private currentLocation$ = new BehaviorSubject<LocationData | null>(null);
   private trackingActive$ = new BehaviorSubject<boolean>(false);
   private consent$ = new BehaviorSubject<LocationConsent | null>(null);
   private gpsEnabled$ = new BehaviorSubject<boolean>(true);
-  private permissionStatus$ = new BehaviorSubject<LocationPermissionStatus | null>(null);
+  private permissionStatus$ =
+    new BehaviorSubject<LocationPermissionStatus | null>(null);
 
   // Signals for reactive UI
   public readonly currentLocation = signal<LocationData | null>(null);
   public readonly isTracking = signal<boolean>(false);
   public readonly hasConsent = signal<boolean>(false);
   public readonly isGpsEnabled = signal<boolean>(true);
-  public readonly permissionStatus = signal<LocationPermissionStatus | null>(null);
+  public readonly permissionStatus = signal<LocationPermissionStatus | null>(
+    null,
+  );
 
   private trackingInterval: any;
   private trackingCadence = 60 * 60 * 1000; // 1 hour in milliseconds
@@ -58,11 +61,17 @@ export class LocationService {
 
   constructor() {
     // Subscribe to observables and update signals
-    this.currentLocation$.subscribe(location => this.currentLocation.set(location));
-    this.trackingActive$.subscribe(active => this.isTracking.set(active));
-    this.consent$.subscribe(consent => this.hasConsent.set(consent?.granted ?? false));
-    this.gpsEnabled$.subscribe(enabled => this.isGpsEnabled.set(enabled));
-    this.permissionStatus$.subscribe(status => this.permissionStatus.set(status));
+    this.currentLocation$.subscribe((location) =>
+      this.currentLocation.set(location),
+    );
+    this.trackingActive$.subscribe((active) => this.isTracking.set(active));
+    this.consent$.subscribe((consent) =>
+      this.hasConsent.set(consent?.granted ?? false),
+    );
+    this.gpsEnabled$.subscribe((enabled) => this.isGpsEnabled.set(enabled));
+    this.permissionStatus$.subscribe((status) =>
+      this.permissionStatus.set(status),
+    );
 
     // Initialize with mock employee data
     this.initializeMockEmployee();
@@ -77,16 +86,16 @@ export class LocationService {
   private initializeMockEmployee() {
     // Mock employee data for demo
     const mockEmployee = {
-      empId: 'EMP001',
-      empAgentCode: 'AG001',
-      empName: 'John Doe',
-      reportingManagerId: 'MGR001',
-      reportingManagerName: 'Jane Smith',
-      department: 'Sales',
-      channel: 'Branch'
+      empId: "EMP001",
+      empAgentCode: "AG001",
+      empName: "John Doe",
+      reportingManagerId: "MGR001",
+      reportingManagerName: "Jane Smith",
+      department: "Sales",
+      channel: "Branch",
     };
-    
-    localStorage.setItem('employeeData', JSON.stringify(mockEmployee));
+
+    localStorage.setItem("employeeData", JSON.stringify(mockEmployee));
   }
 
   private async checkPermissionStatus() {
@@ -95,7 +104,7 @@ export class LocationService {
   }
 
   private checkExistingConsent() {
-    const storedConsent = localStorage.getItem('locationConsent');
+    const storedConsent = localStorage.getItem("locationConsent");
     if (storedConsent) {
       const consent: LocationConsent = JSON.parse(storedConsent);
       this.consent$.next(consent);
@@ -112,27 +121,33 @@ export class LocationService {
       this.permissionStatus$.next(permissionStatus);
 
       if (!permissionStatus.supported) {
-        this.showUserFriendlyError('Geolocation is not supported by this browser', permissionStatus.browserInstructions);
+        this.showUserFriendlyError(
+          "Geolocation is not supported by this browser",
+          permissionStatus.browserInstructions,
+        );
         return false;
       }
 
       if (!permissionStatus.canRequest) {
-        this.showUserFriendlyError('Location permission has been blocked', permissionStatus.browserInstructions);
+        this.showUserFriendlyError(
+          "Location permission has been blocked",
+          permissionStatus.browserInstructions,
+        );
         return false;
       }
 
       // Request geolocation permission
-      console.log('Requesting location permission...');
+      console.log("Requesting location permission...");
       const position = await this.getCurrentPosition();
-      console.log('Location permission granted successfully');
+      console.log("Location permission granted successfully");
 
       const consent: LocationConsent = {
         granted: true,
         timestamp: new Date(),
-        canRevoke: true
+        canRevoke: true,
       };
 
-      localStorage.setItem('locationConsent', JSON.stringify(consent));
+      localStorage.setItem("locationConsent", JSON.stringify(consent));
       this.consent$.next(consent);
 
       // Update permission status
@@ -140,9 +155,9 @@ export class LocationService {
 
       // Show success notification
       this.notificationService.success(
-        'Location Permission Granted',
-        'Location tracking is now enabled. Your location will be tracked during working hours.',
-        true
+        "Location Permission Granted",
+        "Location tracking is now enabled. Your location will be tracked during working hours.",
+        true,
       );
 
       this.checkGpsAndStartTracking();
@@ -150,17 +165,20 @@ export class LocationService {
     } catch (error) {
       const errorMessage = this.getLocationErrorMessage(error);
       const errorDetails = this.getErrorDetails(error);
-      
-      console.error('Location consent denied:', {
+
+      console.error("Location consent denied:", {
         message: errorMessage,
         details: errorDetails,
-        error: error
+        error: error,
       });
 
       // Update permission status after error
       await this.checkPermissionStatus();
-      
-      this.showUserFriendlyError(errorMessage, this.permissionStatus()?.browserInstructions || '');
+
+      this.showUserFriendlyError(
+        errorMessage,
+        this.permissionStatus()?.browserInstructions || "",
+      );
       return false;
     }
   }
@@ -169,10 +187,10 @@ export class LocationService {
     const consent: LocationConsent = {
       granted: false,
       timestamp: new Date(),
-      canRevoke: true
+      canRevoke: true,
     };
-    
-    localStorage.setItem('locationConsent', JSON.stringify(consent));
+
+    localStorage.setItem("locationConsent", JSON.stringify(consent));
     this.consent$.next(consent);
     this.stopTracking();
   }
@@ -180,36 +198,36 @@ export class LocationService {
   private async getCurrentPosition(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
-        reject(new Error('Geolocation is not supported by this browser.'));
+        reject(new Error("Geolocation is not supported by this browser."));
         return;
       }
 
-      console.log('Requesting current position...');
+      console.log("Requesting current position...");
       navigator.geolocation.getCurrentPosition(
-        position => {
-          console.log('Location acquired successfully:', {
+        (position) => {
+          console.log("Location acquired successfully:", {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-            accuracy: position.coords.accuracy
+            accuracy: position.coords.accuracy,
           });
           resolve(position);
         },
-        error => {
+        (error) => {
           const errorMessage = this.getLocationErrorMessage(error);
           const errorDetails = this.getErrorDetails(error);
-          console.error('Geolocation error:', {
+          console.error("Geolocation error:", {
             message: errorMessage,
             details: errorDetails,
             code: error.code,
-            error: error
+            error: error,
           });
           reject(error);
         },
         {
           enableHighAccuracy: false, // Changed to false for better compatibility
           timeout: 15000, // Increased timeout
-          maximumAge: 600000 // 10 minutes
-        }
+          maximumAge: 600000, // 10 minutes
+        },
       );
     });
   }
@@ -222,7 +240,7 @@ export class LocationService {
       this.startTracking();
     } catch (error) {
       const errorMessage = this.getLocationErrorMessage(error);
-      console.warn('GPS check failed:', errorMessage);
+      console.warn("GPS check failed:", errorMessage);
       this.gpsEnabled$.next(false);
       // Don't show error popup for GPS check failures during startup
     }
@@ -234,7 +252,7 @@ export class LocationService {
     }
 
     this.trackingActive$.next(true);
-    
+
     // Capture initial location
     this.captureLocation(true);
 
@@ -242,9 +260,12 @@ export class LocationService {
     this.trackingInterval = setInterval(() => {
       const now = new Date();
       const currentHour = now.getHours();
-      
+
       // Only track during working hours
-      if (currentHour >= this.trackingStartTime && currentHour <= this.trackingEndTime) {
+      if (
+        currentHour >= this.trackingStartTime &&
+        currentHour <= this.trackingEndTime
+      ) {
         this.captureLocation(false);
       }
     }, this.trackingCadence);
@@ -261,47 +282,57 @@ export class LocationService {
   private async captureLocation(userInitiated: boolean = false) {
     try {
       const position = await this.getCurrentPosition();
-      const employeeData = JSON.parse(localStorage.getItem('employeeData') || '{}');
+      const employeeData = JSON.parse(
+        localStorage.getItem("employeeData") || "{}",
+      );
 
       const locationData: LocationData = {
         ...employeeData,
         dateTime: new Date(),
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
-        location: await this.reverseGeocode(position.coords.latitude, position.coords.longitude),
+        location: await this.reverseGeocode(
+          position.coords.latitude,
+          position.coords.longitude,
+        ),
         accuracy: position.coords.accuracy,
-        userInitiated
+        userInitiated,
       };
 
       this.currentLocation$.next(locationData);
       this.storeLocationData(locationData);
-
     } catch (error) {
       const errorMessage = this.getLocationErrorMessage(error);
-      console.error('Failed to capture location:', errorMessage);
+      console.error("Failed to capture location:", errorMessage);
       if (userInitiated) {
-        this.showUserFriendlyError(`Failed to capture location: ${errorMessage}`, this.permissionStatus()?.browserInstructions || '');
+        this.showUserFriendlyError(
+          `Failed to capture location: ${errorMessage}`,
+          this.permissionStatus()?.browserInstructions || "",
+        );
       }
       this.gpsEnabled$.next(false);
     }
   }
 
   private getLocationErrorMessage(error: any): string {
-    if (error instanceof GeolocationPositionError || (error && error.code !== undefined)) {
+    if (
+      error instanceof GeolocationPositionError ||
+      (error && error.code !== undefined)
+    ) {
       switch (error.code) {
         case 1: // PERMISSION_DENIED
-          return 'Location access denied. Please enable location permissions in your browser.';
+          return "Location access denied. Please enable location permissions in your browser.";
         case 2: // POSITION_UNAVAILABLE
-          return 'Location information is unavailable. Please check your GPS/network connection.';
+          return "Location information is unavailable. Please check your GPS/network connection.";
         case 3: // TIMEOUT
-          return 'Location request timed out. Please try again.';
+          return "Location request timed out. Please try again.";
         default:
-          return `Location error: ${error.message || 'Unknown error occurred'}`;
+          return `Location error: ${error.message || "Unknown error occurred"}`;
       }
     } else if (error instanceof Error) {
       return error.message;
     }
-    return 'An unknown location error occurred. Please try again.';
+    return "An unknown location error occurred. Please try again.";
   }
 
   private getErrorDetails(error: any): any {
@@ -311,7 +342,7 @@ export class LocationService {
         message: error.message,
         PERMISSION_DENIED: error.code === 1,
         POSITION_UNAVAILABLE: error.code === 2,
-        TIMEOUT: error.code === 3
+        TIMEOUT: error.code === 3,
       };
     }
     return error;
@@ -322,35 +353,41 @@ export class LocationService {
     const errorDetails = {
       message,
       browserInstructions,
-      timestamp: new Date()
+      timestamp: new Date(),
     };
 
     // Log detailed error for debugging
-    console.error('Location Error Details:', errorDetails);
+    console.error("Location Error Details:", errorDetails);
 
     // Show user-friendly notification
-    const userMessage = this.formatUserErrorMessage(message, browserInstructions);
+    const userMessage = this.formatUserErrorMessage(
+      message,
+      browserInstructions,
+    );
 
     // Show error notification with instructions
     this.notificationService.error(
-      'Location Access Required',
+      "Location Access Required",
       `${message}\n\nThis app needs location access for tracking and geo-validation features.\n\nClick here for browser-specific instructions.`,
-      false // Don't auto-close
+      false, // Don't auto-close
     );
 
     // For detailed instructions, could show a separate info notification
     if (browserInstructions) {
       setTimeout(() => {
         this.notificationService.info(
-          'Browser Instructions',
+          "Browser Instructions",
           browserInstructions,
-          false // Don't auto-close so user can read it
+          false, // Don't auto-close so user can read it
         );
       }, 1000);
     }
   }
 
-  private formatUserErrorMessage(message: string, instructions: string): string {
+  private formatUserErrorMessage(
+    message: string,
+    instructions: string,
+  ): string {
     return `Location Access Required\n\n${message}\n\nThis app needs location access to provide location-based features like tracking and geo-validation.`;
   }
 
@@ -359,40 +396,44 @@ export class LocationService {
     if (!navigator.geolocation) {
       return {
         supported: false,
-        state: 'not-supported',
+        state: "not-supported",
         canRequest: false,
-        browserInstructions: 'Your browser does not support geolocation. Please upgrade to a modern browser.'
+        browserInstructions:
+          "Your browser does not support geolocation. Please upgrade to a modern browser.",
       };
     }
 
-    let permissionState: 'granted' | 'denied' | 'prompt' | 'unknown' = 'unknown';
+    let permissionState: "granted" | "denied" | "prompt" | "unknown" =
+      "unknown";
     let browserInstructions = this.getBrowserInstructions();
 
-    if ('permissions' in navigator) {
+    if ("permissions" in navigator) {
       try {
-        const permission = await navigator.permissions.query({ name: 'geolocation' });
-        permissionState = permission.state as 'granted' | 'denied' | 'prompt';
-        
-        if (permission.state === 'denied') {
+        const permission = await navigator.permissions.query({
+          name: "geolocation",
+        });
+        permissionState = permission.state as "granted" | "denied" | "prompt";
+
+        if (permission.state === "denied") {
           browserInstructions = this.getDeniedPermissionInstructions();
         }
       } catch (error) {
-        console.warn('Could not query geolocation permission:', error);
+        console.warn("Could not query geolocation permission:", error);
       }
     }
 
     return {
       supported: true,
       state: permissionState,
-      canRequest: permissionState !== 'denied',
-      browserInstructions
+      canRequest: permissionState !== "denied",
+      browserInstructions,
     };
   }
 
   private getBrowserInstructions(): string {
     const userAgent = navigator.userAgent.toLowerCase();
-    
-    if (userAgent.includes('chrome')) {
+
+    if (userAgent.includes("chrome")) {
       return `Chrome Instructions:
 1. Click the location icon (🌐) in the address bar
 2. Select "Allow" for location permissions
@@ -401,20 +442,20 @@ export class LocationService {
 Alternative:
 1. Go to Settings > Privacy and security > Site Settings > Location
 2. Find this site and set it to "Allow"`;
-    } else if (userAgent.includes('firefox')) {
+    } else if (userAgent.includes("firefox")) {
       return `Firefox Instructions:
 1. Click the shield icon in the address bar
 2. Turn off "Enhanced Tracking Protection" for this site
 3. Click the location icon and select "Allow"
 4. Refresh the page and try again`;
-    } else if (userAgent.includes('safari')) {
+    } else if (userAgent.includes("safari")) {
       return `Safari Instructions:
 1. Go to Safari > Preferences > Privacy
 2. Click "Manage Website Data"
 3. Find this site and select "Allow"
 4. Or go to Safari > Preferences > Websites > Location
 5. Set this site to "Allow"`;
-    } else if (userAgent.includes('edge')) {
+    } else if (userAgent.includes("edge")) {
       return `Edge Instructions:
 1. Click the location icon in the address bar
 2. Select "Allow" for location permissions
@@ -438,8 +479,8 @@ If you don't see a location icon:
 
   private getDeniedPermissionInstructions(): string {
     const userAgent = navigator.userAgent.toLowerCase();
-    
-    if (userAgent.includes('chrome')) {
+
+    if (userAgent.includes("chrome")) {
       return `Location Permission is Blocked - Chrome:
 
 To unblock:
@@ -453,7 +494,7 @@ Or:
 2. Find this site in the blocked list
 3. Remove it or change to allow
 4. Refresh the page`;
-    } else if (userAgent.includes('firefox')) {
+    } else if (userAgent.includes("firefox")) {
       return `Location Permission is Blocked - Firefox:
 
 To unblock:
@@ -485,58 +526,64 @@ Or check your browser's privacy/security settings:
   private async reverseGeocode(lat: number, lng: number): Promise<string> {
     // Mock reverse geocoding - in real app, use Google Maps API
     const mockLocations = [
-      'Main Branch Office, Downtown',
-      'Regional Office, Business District',
-      'Customer Office, Tech Park',
-      'Home Office Area'
+      "Main Branch Office, Downtown",
+      "Regional Office, Business District",
+      "Customer Office, Tech Park",
+      "Home Office Area",
     ];
     return mockLocations[Math.floor(Math.random() * mockLocations.length)];
   }
 
   private storeLocationData(locationData: LocationData) {
-    const stored = JSON.parse(localStorage.getItem('locationHistory') || '[]');
+    const stored = JSON.parse(localStorage.getItem("locationHistory") || "[]");
     stored.push(locationData);
-    
+
     // Keep only last 100 entries for demo
     if (stored.length > 100) {
       stored.splice(0, stored.length - 100);
     }
-    
-    localStorage.setItem('locationHistory', JSON.stringify(stored));
+
+    localStorage.setItem("locationHistory", JSON.stringify(stored));
   }
 
   async manualLocationCapture(): Promise<LocationData | null> {
     try {
       if (!navigator.geolocation) {
-        this.showUserFriendlyError('Geolocation is not supported by this browser', 'Please upgrade to a modern browser that supports location services.');
+        this.showUserFriendlyError(
+          "Geolocation is not supported by this browser",
+          "Please upgrade to a modern browser that supports location services.",
+        );
         return null;
       }
 
-      console.log('Manual location capture requested');
+      console.log("Manual location capture requested");
       await this.captureLocation(true);
       const location = this.currentLocation();
-      
+
       if (location) {
-        console.log('Manual location capture successful');
+        console.log("Manual location capture successful");
         // Show success notification
         this.notificationService.success(
-          'Location Captured',
+          "Location Captured",
           `Successfully captured location: ${location.location}`,
-          true // Auto-close after 3 seconds
+          true, // Auto-close after 3 seconds
         );
       }
-      
+
       return location;
     } catch (error) {
       const errorMessage = this.getLocationErrorMessage(error);
-      console.error('Manual location capture failed:', errorMessage);
-      this.showUserFriendlyError(`Failed to capture location: ${errorMessage}`, this.permissionStatus()?.browserInstructions || '');
+      console.error("Manual location capture failed:", errorMessage);
+      this.showUserFriendlyError(
+        `Failed to capture location: ${errorMessage}`,
+        this.permissionStatus()?.browserInstructions || "",
+      );
       return null;
     }
   }
 
   getLocationHistory(): LocationData[] {
-    return JSON.parse(localStorage.getItem('locationHistory') || '[]');
+    return JSON.parse(localStorage.getItem("locationHistory") || "[]");
   }
 
   getCurrentLocationObservable(): Observable<LocationData | null> {
@@ -558,7 +605,11 @@ Or check your browser's privacy/security settings:
     return status;
   }
 
-  isWithinGeofence(targetLat: number, targetLng: number, radiusMeters: number = 100): boolean {
+  isWithinGeofence(
+    targetLat: number,
+    targetLng: number,
+    radiusMeters: number = 100,
+  ): boolean {
     const current = this.currentLocation();
     if (!current) return false;
 
@@ -566,23 +617,28 @@ Or check your browser's privacy/security settings:
       current.latitude,
       current.longitude,
       targetLat,
-      targetLng
+      targetLng,
     );
 
     return distance <= radiusMeters;
   }
 
-  private calculateDistance(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  private calculateDistance(
+    lat1: number,
+    lng1: number,
+    lat2: number,
+    lng2: number,
+  ): number {
     const R = 6371e3; // Earth's radius in meters
-    const φ1 = lat1 * Math.PI/180;
-    const φ2 = lat2 * Math.PI/180;
-    const Δφ = (lat2-lat1) * Math.PI/180;
-    const Δλ = (lng2-lng1) * Math.PI/180;
+    const φ1 = (lat1 * Math.PI) / 180;
+    const φ2 = (lat2 * Math.PI) / 180;
+    const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+    const Δλ = ((lng2 - lng1) * Math.PI) / 180;
 
-    const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-              Math.cos(φ1) * Math.cos(φ2) *
-              Math.sin(Δλ/2) * Math.sin(Δλ/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a =
+      Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+      Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c;
   }

@@ -1,6 +1,12 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal } from "@angular/core";
 
-export type ModalType = 'location' | 'partner-meet' | 'analytics' | 'meeting-detail' | 'location-history' | null;
+export type ModalType =
+  | "location"
+  | "partner-meet"
+  | "analytics"
+  | "meeting-detail"
+  | "location-history"
+  | null;
 
 export interface ModalState {
   isOpen: boolean;
@@ -9,13 +15,13 @@ export interface ModalState {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ModalService {
   private modalState = signal<ModalState>({
     isOpen: false,
     type: null,
-    data: null
+    data: null,
   });
 
   // Public readonly signal
@@ -25,22 +31,22 @@ export class ModalService {
     this.modalState.set({
       isOpen: true,
       type,
-      data
+      data,
     });
-    
+
     // Prevent body scroll when modal is open
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
   }
 
   closeModal() {
     this.modalState.set({
       isOpen: false,
       type: null,
-      data: null
+      data: null,
     });
-    
+
     // Restore body scroll
-    document.body.style.overflow = 'auto';
+    document.body.style.overflow = "auto";
   }
 
   isModalOpen(type?: ModalType): boolean {
