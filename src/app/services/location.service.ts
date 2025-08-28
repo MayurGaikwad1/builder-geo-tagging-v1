@@ -1,6 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { BehaviorSubject, Observable, interval } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
+import { NotificationService } from './notification.service';
 
 export interface LocationData {
   empId: string;
