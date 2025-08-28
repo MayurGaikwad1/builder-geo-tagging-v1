@@ -21,8 +21,8 @@ import { LocationService } from '../services/location.service';
                 </svg>
               </div>
               <div class="ml-3">
-                <h1 class="text-xl font-semibold text-secondary-900">1App</h1>
-                <p class="text-xs text-secondary-500">Field Location System</p>
+                <h1 class="text-xl font-semibold text-secondary-900">Geo-Tagging</h1>
+                <p class="text-xs text-secondary-500">Location & Partner Management</p>
               </div>
             </div>
           </div>
