@@ -354,11 +354,15 @@ export class DashboardComponent implements OnInit {
     if (!this.hasLocationConsent()) {
       return 'Location consent required';
     }
-    
+
+    if (!this.locationService.isGpsEnabled()) {
+      return 'GPS/Location disabled';
+    }
+
     if (this.locationService.isTracking()) {
       return 'Active tracking';
     }
-    
+
     return 'Tracking inactive';
   }
 
