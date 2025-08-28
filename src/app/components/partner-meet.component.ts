@@ -621,18 +621,16 @@ export class PartnerMeetComponent implements OnInit {
   }
 
   onPartnerSelect() {
-    const agentCode = this.newMeeting().partnerAgentCode;
+    const agentCode = this.newMeetingData.partnerAgentCode;
     if (agentCode) {
       const partner = this.partnerService.getPartnerByAgentCode(agentCode);
       if (partner) {
         this.selectedPartner.set(partner);
-        const meeting = this.newMeeting();
-        meeting.partnerName = partner.name;
-        meeting.contactNo = partner.contactNo || '';
-        if (meeting.useStoredAddress) {
-          meeting.address = partner.address;
+        this.newMeetingData.partnerName = partner.name;
+        this.newMeetingData.contactNo = partner.contactNo || '';
+        if (this.newMeetingData.useStoredAddress) {
+          this.newMeetingData.address = partner.address;
         }
-        this.newMeeting.set({ ...meeting });
       }
     }
   }
@@ -643,9 +641,9 @@ export class PartnerMeetComponent implements OnInit {
     this.isCreating.set(true);
     
     try {
-      const meeting = this.newMeeting();
+      const meeting = this.newMeetingData;
       const meetingDateTime = new Date(`${meeting.date}T${meeting.time}`);
-      
+
       const result = await this.partnerService.createMeeting({
         partnerAgentCode: meeting.partnerAgentCode || undefined,
         partnerName: meeting.partnerName,
