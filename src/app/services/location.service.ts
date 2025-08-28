@@ -280,10 +280,17 @@ export class LocationService {
 
   async manualLocationCapture(): Promise<LocationData | null> {
     try {
+      if (!navigator.geolocation) {
+        this.showLocationError('Geolocation is not supported by this browser');
+        return null;
+      }
+
       await this.captureLocation(true);
       return this.currentLocation();
     } catch (error) {
-      console.error('Manual location capture failed:', error);
+      const errorMessage = this.getLocationErrorMessage(error);
+      console.error('Manual location capture failed:', errorMessage);
+      this.showLocationError(`Failed to capture location: ${errorMessage}`);
       return null;
     }
   }
