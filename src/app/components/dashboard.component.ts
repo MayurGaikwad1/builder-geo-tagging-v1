@@ -309,7 +309,7 @@ import { AnalyticsModalComponent } from './modals/analytics-modal.component';
       @apply border-warning-300 bg-warning-50;
     }
     .tile-incomplete {
-      @apply border-error-300 bg-error-50;
+      @apply border-red-300 bg-red-50;
     }
     .btn {
       @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2;
