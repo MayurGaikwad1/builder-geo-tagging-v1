@@ -740,6 +740,20 @@ export class PartnerMeetModalComponent {
     return new Date().toISOString().split("T")[0];
   }
 
+  onCurrentLocationChange(event: any) {
+    if (event.target.checked) {
+      const currentLocation = this.locationService.currentLocation();
+      if (currentLocation) {
+        this.newMeetingData.address = currentLocation.location;
+        this.newMeetingData.useStoredAddress = true;
+      }
+    } else {
+      this.newMeetingData.address = "";
+      this.newMeetingData.useStoredAddress = false;
+      this.newMeetingData.addressType = "";
+    }
+  }
+
   getFilteredPartners(): Partner[] {
     return this.partnerService
       .getPartnersByCategory("existing")
