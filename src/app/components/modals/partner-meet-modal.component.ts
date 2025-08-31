@@ -780,14 +780,14 @@ export class PartnerMeetModalComponent {
           : this.newMeetingData.partnerName,
         meetingDateTime,
         purpose: this.newMeetingData.purpose as MeetingPurpose,
-        address: this.newMeetingData.useStoredAddress
+        address: this.newMeetingData.useCurrentLocation
           ? currentLocation?.location || this.newMeetingData.address
           : this.newMeetingData.address,
         remark: this.newMeetingData.remark,
-        latitude: this.newMeetingData.useStoredAddress
+        latitude: this.newMeetingData.useCurrentLocation
           ? currentLocation?.latitude
           : undefined,
-        longitude: this.newMeetingData.useStoredAddress
+        longitude: this.newMeetingData.useCurrentLocation
           ? currentLocation?.longitude
           : undefined,
       };
