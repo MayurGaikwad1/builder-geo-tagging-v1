@@ -276,12 +276,12 @@ import { ModalService } from "../../services/modal.service";
                       <div class="space-y-2" *ngIf="newMeetingData.useCurrentLocation">
                         <div class="flex items-center">
                           <input
-                            type="radio"
+                            type="checkbox"
                             id="address-office"
-                            name="addressType"
-                            value="office"
-                            [(ngModel)]="newMeetingData.addressType"
-                            class="form-radio"
+                            name="addressOffice"
+                            class="form-checkbox"
+                            [checked]="newMeetingData.addressType === 'office'"
+                            (change)="newMeetingData.addressType = $event.target.checked ? 'office' : ''"
                           />
                           <label
                             for="address-office"
@@ -292,12 +292,12 @@ import { ModalService } from "../../services/modal.service";
                         </div>
                         <div class="flex items-center">
                           <input
-                            type="radio"
+                            type="checkbox"
                             id="address-partner-home"
-                            name="addressType"
-                            value="partner-home"
-                            [(ngModel)]="newMeetingData.addressType"
-                            class="form-radio"
+                            name="addressPartnerHome"
+                            class="form-checkbox"
+                            [checked]="newMeetingData.addressType === 'partner-home'"
+                            (change)="newMeetingData.addressType = $event.target.checked ? 'partner-home' : ''"
                           />
                           <label
                             for="address-partner-home"
