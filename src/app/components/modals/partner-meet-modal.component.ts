@@ -273,7 +273,10 @@ import { ModalService } from "../../services/modal.service";
                       </div>
 
                       <!-- Address Type Selection -->
-                      <div class="space-y-2" *ngIf="newMeetingData.useCurrentLocation">
+                      <div
+                        class="space-y-2"
+                        *ngIf="newMeetingData.useCurrentLocation"
+                      >
                         <div class="flex items-center">
                           <input
                             type="checkbox"
@@ -281,7 +284,11 @@ import { ModalService } from "../../services/modal.service";
                             name="addressOffice"
                             class="form-checkbox"
                             [checked]="newMeetingData.addressType === 'office'"
-                            (change)="newMeetingData.addressType = $event.target.checked ? 'office' : ''"
+                            (change)="
+                              newMeetingData.addressType = $event.target.checked
+                                ? 'office'
+                                : ''
+                            "
                           />
                           <label
                             for="address-office"
@@ -296,8 +303,14 @@ import { ModalService } from "../../services/modal.service";
                             id="address-partner-home"
                             name="addressPartnerHome"
                             class="form-checkbox"
-                            [checked]="newMeetingData.addressType === 'partner-home'"
-                            (change)="newMeetingData.addressType = $event.target.checked ? 'partner-home' : ''"
+                            [checked]="
+                              newMeetingData.addressType === 'partner-home'
+                            "
+                            (change)="
+                              newMeetingData.addressType = $event.target.checked
+                                ? 'partner-home'
+                                : ''
+                            "
                           />
                           <label
                             for="address-partner-home"
