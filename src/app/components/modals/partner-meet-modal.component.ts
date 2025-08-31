@@ -251,31 +251,68 @@ import { ModalService } from "../../services/modal.service";
                       class="block text-sm font-medium text-secondary-700 mb-2"
                       >Meeting Address</label
                     >
-                    <div class="space-y-2">
+                    <div class="space-y-3">
                       <div
                         class="flex items-center"
                         *ngIf="locationService.currentLocation()"
                       >
                         <input
                           type="checkbox"
-                          [(ngModel)]="newMeetingData.useStoredAddress"
-                          name="useStoredAddress"
-                          id="useStoredAddress"
+                          [(ngModel)]="newMeetingData.useCurrentLocation"
+                          name="useCurrentLocation"
+                          id="useCurrentLocation"
                           class="form-checkbox"
+                          (change)="onCurrentLocationChange($event)"
                         />
                         <label
-                          for="useStoredAddress"
+                          for="useCurrentLocation"
                           class="ml-2 text-sm text-secondary-700"
                         >
-                          Use current location:
-                          {{ locationService.currentLocation()?.location }}
+                          Current Location
                         </label>
                       </div>
+
+                      <!-- Address Type Selection -->
+                      <div class="space-y-2" *ngIf="newMeetingData.useCurrentLocation">
+                        <div class="flex items-center">
+                          <input
+                            type="radio"
+                            id="address-office"
+                            name="addressType"
+                            value="office"
+                            [(ngModel)]="newMeetingData.addressType"
+                            class="form-radio"
+                          />
+                          <label
+                            for="address-office"
+                            class="ml-2 text-sm text-secondary-700"
+                          >
+                            Office Address
+                          </label>
+                        </div>
+                        <div class="flex items-center">
+                          <input
+                            type="radio"
+                            id="address-partner-home"
+                            name="addressType"
+                            value="partner-home"
+                            [(ngModel)]="newMeetingData.addressType"
+                            class="form-radio"
+                          />
+                          <label
+                            for="address-partner-home"
+                            class="ml-2 text-sm text-secondary-700"
+                          >
+                            Partner Home/Office
+                          </label>
+                        </div>
+                      </div>
+
                       <textarea
                         [(ngModel)]="newMeetingData.address"
                         name="address"
                         required
-                        [disabled]="newMeetingData.useStoredAddress"
+                        [disabled]="newMeetingData.useCurrentLocation"
                         class="form-textarea"
                         rows="3"
                         placeholder="Enter meeting address"
