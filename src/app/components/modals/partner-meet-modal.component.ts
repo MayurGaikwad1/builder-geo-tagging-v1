@@ -725,11 +725,13 @@ export class PartnerMeetModalComponent {
   ];
 
   constructor() {
-    // Initialize with defaults
-    this.newMeetingData.category = "existing";
-    this.newMeetingData.partnerAgentCode = "PA001";
-    this.newMeetingData.date = this.getTodayDate();
-    this.newMeetingData.purpose = "New Business";
+    // Initialize with defaults after property initialization
+    setTimeout(() => {
+      this.newMeetingData.category = "existing";
+      this.newMeetingData.partnerAgentCode = "PA001";
+      this.newMeetingData.date = this.getTodayDate();
+      this.newMeetingData.purpose = "New Business";
+    }, 0);
   }
 
   closeModal() {
