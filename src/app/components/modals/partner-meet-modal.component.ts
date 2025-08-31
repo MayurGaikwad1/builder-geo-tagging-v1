@@ -92,16 +92,40 @@ import { ModalService } from "../../services/modal.service";
                       class="block text-sm font-medium text-secondary-700 mb-2"
                       >Partner Category</label
                     >
-                    <select
-                      [(ngModel)]="newMeetingData.category"
-                      name="category"
-                      required
-                      class="form-select"
-                    >
-                      <option value="">Select Category</option>
-                      <option value="existing">Existing Partner</option>
-                      <option value="new">New Partner</option>
-                    </select>
+                    <div class="space-y-2">
+                      <div class="flex items-center">
+                        <input
+                          type="radio"
+                          id="category-existing"
+                          name="category"
+                          value="existing"
+                          [(ngModel)]="newMeetingData.category"
+                          class="form-radio"
+                        />
+                        <label
+                          for="category-existing"
+                          class="ml-2 text-sm text-secondary-700"
+                        >
+                          Existing Partner
+                        </label>
+                      </div>
+                      <div class="flex items-center">
+                        <input
+                          type="radio"
+                          id="category-new"
+                          name="category"
+                          value="new"
+                          [(ngModel)]="newMeetingData.category"
+                          class="form-radio"
+                        />
+                        <label
+                          for="category-new"
+                          class="ml-2 text-sm text-secondary-700"
+                        >
+                          New Partner
+                        </label>
+                      </div>
+                    </div>
                   </div>
 
                   <!-- Sub Category -->
