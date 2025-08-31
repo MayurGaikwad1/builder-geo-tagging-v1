@@ -660,11 +660,11 @@ export class PartnerMeetModalComponent {
   ];
 
   constructor() {
-    // Set default address to current location if available
-    const currentLocation = this.locationService.currentLocation();
-    if (currentLocation && this.newMeetingData.useStoredAddress) {
-      this.newMeetingData.address = currentLocation.location;
-    }
+    // Initialize with defaults
+    this.newMeetingData.category = "existing";
+    this.newMeetingData.partnerAgentCode = "PA001";
+    this.newMeetingData.date = this.getTodayDate();
+    this.newMeetingData.purpose = "New Business";
   }
 
   closeModal() {
