@@ -622,17 +622,19 @@ export class PartnerMeetModalComponent {
   meetingFilter = "all";
 
   newMeetingData = {
-    category: "",
+    category: "existing",
     subCategory: "",
-    partnerAgentCode: "",
+    partnerAgentCode: "PA001",
     partnerName: "",
-    date: "",
+    date: this.getTodayDate(),
     time: "",
-    purpose: "",
+    purpose: "New Business",
     address: "",
     contactNo: "",
     remark: "",
-    useStoredAddress: true,
+    useStoredAddress: false,
+    useCurrentLocation: false,
+    addressType: "",
   };
 
   meetingPurposes: MeetingPurpose[] = [
