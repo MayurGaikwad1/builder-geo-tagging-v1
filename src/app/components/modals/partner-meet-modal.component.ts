@@ -656,8 +656,12 @@ import { ModalService } from "../../services/modal.service";
       .form-textarea {
         @apply block w-full rounded-md border-secondary-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm;
       }
+      .form-checkbox,
+      .form-radio {
+        @apply border-secondary-300 text-primary-600 shadow-sm focus:border-primary-500 focus:ring-primary-500;
+      }
       .form-checkbox {
-        @apply rounded border-secondary-300 text-primary-600 shadow-sm focus:border-primary-500 focus:ring-primary-500;
+        @apply rounded;
       }
       .status-badge {
         @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
